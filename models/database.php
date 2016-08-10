@@ -48,6 +48,11 @@ class Database{
     return $this->connection->prepare($query);
   }
 
+
+  public function lastInsertId()
+  {
+    return $this->connection->lastInsertId();
+  }
   
 }
 

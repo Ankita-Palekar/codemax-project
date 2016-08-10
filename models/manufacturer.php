@@ -39,6 +39,11 @@ class Manufacturer extends Model
     return $c;
   }
 
+  static public function FunctionName($value='')
+  {
+    # code...
+  }
+
   static public function create($params)
   {
     $query = "INSERT INTO ".self::MANUFACT_TABLE." (name) VALUES (:name)";
@@ -53,7 +58,7 @@ class Manufacturer extends Model
       var_dump($dbo->errorInfo());
       throw new Exception("Manufacturer model cannot be added");
     }
-    // var_dump($dbo->lastInsertId());
-    return self::find(6);
+    // var_dump($db->lastInsertId());
+    return self::find($db->lastInsertId());
   }
 }

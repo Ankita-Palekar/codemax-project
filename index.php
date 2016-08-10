@@ -20,11 +20,17 @@
     $action = $_GET['action'];
     $model = ucfirst($_GET['model']);
     $controller = ucfirst($model)."Controller"; 
-    $dispatch = new $controller($model, $controller, $action);
-    $queryString = '';
+    $render = '';
+    $dispatch = new $controller($model, $controller, $action, $render);
+    $queryParams = '';
+
+    if (isset($_POST)) {
+      $queryParams = $_POST;
+    }  
+    
 
     if ((int)method_exists($controller, $action)) {
-      call_user_func_array(array($dispatch, $action), array($queryString));
+      call_user_func_array(array($dispatch, $action), array($queryParams));
     }
   }else {
       

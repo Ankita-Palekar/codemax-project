@@ -66,7 +66,7 @@ class Carmodel extends Model
       throw new Exception("car model cannot be added");
       // TODO please remove the image inserted also;
     } 
-    // return self::find($dbo->lastInsertId());
+    return self::find($db->lastInsertId());
   }
 
   public function destroy()

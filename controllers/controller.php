@@ -4,7 +4,6 @@ class Controller {
   protected $controller;
   protected $action;
   protected $template;
-
   function __construct($model, $controller, $action) {
     $this->model = $model;
     $this->controller = $controller;
