@@ -3,7 +3,7 @@
 * 
 */
   
-class CarModel extends Model
+class Carmodel extends Model
 {
   public $id;
   public $name;
@@ -50,15 +50,15 @@ class CarModel extends Model
 
   static public function create($params)
   {
-    // TODO - This query should be should be retrieve from the db class. Will need little more research on current framework to check how they do.
-    $query = "INSERT INTO ".$this->table." (name, color, manufacturing_year, reg_no, note, picture1_id, picture2_id, manufacturer_id) VALUES (:name, :color, :manufacturing_year, :reg_no, :note, :picture1_id, :picture2_id, :manufacturer_id)";                      
+    // TODO - This query should be  retrieve from the db class. Will need little more research on current framework to check how they do.
+    $query = "INSERT INTO ".self::CAR_TABLE." (name, color, manufacturing_year, reg_no, note, picture1_id, picture2_id, manufacturer_id) VALUES (:name, :color, :manufacturing_year, :reg_no, :note, :picture1_id, :picture2_id, :manufacturer_id)";                      
     
     $db = self::get_db_object();
 
     $dbo = $db->prepare($query);
     
     foreach ($params as $key => $value) {
-      $this->bind_key_value($dbo, $key, $value);
+      self::bind_key_value_for_class($dbo, $key, $value);
     }
 
     if(!$dbo->execute()) {
@@ -66,7 +66,7 @@ class CarModel extends Model
       throw new Exception("car model cannot be added");
       // TODO please remove the image inserted also;
     } 
-    return self::find($dbo->lastInsertId());
+    // return self::find($dbo->lastInsertId());
   }
 
   public function destroy()

@@ -9,11 +9,12 @@ class Controller {
     $this->model = $model;
     $this->controller = $controller;
     $this->action = $action;
+    $this->template = new Template($controller, $action); 
   }
 
-  // function set($name,$value) {
-  //   $this->template->set($name,$value);
-  // }
+  function set($name,$value) {
+    $this->template->set($name, $value);
+  }
 
    
 
