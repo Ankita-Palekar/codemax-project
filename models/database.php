@@ -2,7 +2,7 @@
 
 class Database{
   private $connection;
-  
+  public $table;  
   function __construct($db_host, $db_user, $db_pass, $db_name)
   { 
     $this->open_connection($db_host, $db_user, $db_pass, $db_name);

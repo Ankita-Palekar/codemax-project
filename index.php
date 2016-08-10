@@ -12,12 +12,10 @@
   require_once('models/photo.php');
 
   // find and destroy element
-  $m = CarModel::find(4);
-  $m->destroy();
+  $m = CarModel::get_all_cars();
+  var_dump($m);
   //  Inserting in the table
-  $m = new CarModel();
-  $array = array('name' => 'farari', 'color' => 'red', 'manufacturing_year' => 2016, 'reg_no' => '1234', 'note' => '12334', 'picture1_id' => 0, 'picture2_id' => 0);
-  $m->add($array);
+   
 
 
    

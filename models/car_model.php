@@ -12,10 +12,12 @@ class CarModel extends Model
   public $note;
   public $picture1_id;
   public $picture2_id;
+  const CAR_TABLE = 'car_models';
+  const MANUFACT_TABLE = "manufacturers";
 
   function __construct()
   {
-    $this->table = "car_models";
+    $this->table = self::CAR_TABLE;
     parent::__construct();
   }
 
@@ -45,10 +47,18 @@ class CarModel extends Model
     return $c;
   }
 
+  // in case of object we can very well connect to db since its inherited from database. In case of class level function we cannot use object so tats why creating a new class level function.
+  
+
+  static public function get_db_object()
+  {
+    return new Database(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+  }
+
   public function add($params)
   {
     // TODO - This query should be should be retrieve from the db class. Will need little more research on current framework to check how they do.
-    $query = "INSERT INTO ".$this->table." (name, color, manufacturing_year, reg_no, note, picture1_id, picture2_id) VALUES (:name, :color, :manufacturing_year, :reg_no, :note, :picture1_id, :picture2_id)";                      
+    $query = "INSERT INTO ".$this->table." (name, color, manufacturing_year, reg_no, note, picture1_id, picture2_id, manufacturer_id) VALUES (:name, :color, :manufacturing_year, :reg_no, :note, :picture1_id, :picture2_id, :manufacturer_id)";                      
     
     $dbo = $this->prepare($query);
     
@@ -75,6 +85,22 @@ class CarModel extends Model
     if (!$dbo->execute()) {
       throw new Exception("Your entry could not be deleted");
     }
+  }
+
+  static public function get_all_cars(){
+    $db = self::get_db_object();
+    $result = array();
+    $query = "SELECT ".self::CAR_TABLE.".name, ".self::MANUFACT_TABLE.".name, count(*) AS count FROM car_models INNER JOIN manufacturers ON manufacturers.id = car_models.manufacturer_id GROUP BY car_models.name, manufacturers.name";
+    $dbo = $db->prepare($query);
+    
+    if ($dbo->execute()) {
+      while ($row = $dbo->fetch(PDO::FETCH_ASSOC)) {
+        array_push($result, $row);
+      }
+    } else {
+      throw new Exception("There is some error while retrieving the solution");
+    }
+    return $result;
   }
 
 }
