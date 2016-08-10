@@ -27,6 +27,16 @@ class Database{
     }
   }
 
+  public function select()
+  {
+    return "SELECT * FROM ".$this->table." WHERE id = :id"; 
+  }
+
+  public function delete($id)
+  {
+    return "DELETE FROM ".$this->table." WHERE id=:id";
+  }
+
   public function sanity_table_check(){
     if (!isset($this->_table)) {
       throw new Exception("table does not exist for class {get_class($this)}");
@@ -38,20 +48,7 @@ class Database{
     return $this->connection->prepare($query);
   }
 
-  public function bind_param($key,$value)
-  {
-    return $this->bind_param($key,$value);
-  }
-
-  public function execute($params= array(''))
-  {
-    return $this->execute($params);
-  }  
-
-  public function fetch()
-  {
-    return $this->fetch();
-  }
+  
 }
 
 
