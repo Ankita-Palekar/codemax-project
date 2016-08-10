@@ -2,6 +2,7 @@
 /**
 * 
 */
+  
 class CarModel extends Model
 {
   public $id;
@@ -47,20 +48,14 @@ class CarModel extends Model
     return $c;
   }
 
-  // in case of object we can very well connect to db since its inherited from database. In case of class level function we cannot use object so tats why creating a new class level function.
-  
-
-  static public function get_db_object()
-  {
-    return new Database(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-  }
-
-  public function add($params)
+  static public function create($params)
   {
     // TODO - This query should be should be retrieve from the db class. Will need little more research on current framework to check how they do.
     $query = "INSERT INTO ".$this->table." (name, color, manufacturing_year, reg_no, note, picture1_id, picture2_id, manufacturer_id) VALUES (:name, :color, :manufacturing_year, :reg_no, :note, :picture1_id, :picture2_id, :manufacturer_id)";                      
     
-    $dbo = $this->prepare($query);
+    $db = self::get_db_object();
+
+    $dbo = $db->prepare($query);
     
     foreach ($params as $key => $value) {
       $this->bind_key_value($dbo, $key, $value);
@@ -70,7 +65,8 @@ class CarModel extends Model
       var_dump($dbo->errorInfo());
       throw new Exception("car model cannot be added");
       // TODO please remove the image inserted also;
-    }
+    } 
+    return self::find($dbo->lastInsertId());
   }
 
   public function destroy()
@@ -87,6 +83,7 @@ class CarModel extends Model
     }
   }
 
+  // TODO - not sure if this particular function needs to be in this model or seperate model should be created.
   static public function get_all_cars(){
     $db = self::get_db_object();
     $result = array();

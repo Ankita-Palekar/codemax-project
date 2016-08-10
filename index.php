@@ -10,11 +10,13 @@
   require_once('models/manufacturer.php');
   require_once('models/model_manufacturer.php');
   require_once('models/photo.php');
+  require_once('controllers/controller.php');
+  require_once('controllers/car_model_controller.php');
+  require_once('controllers/manufacturer_controller.php');
 
-  // find and destroy element
-  $m = CarModel::get_all_cars();
-  var_dump($m);
-  //  Inserting in the table
+  $c =  new ManufacturerController('Manufacturer', 'ManufacturerController', 'add_manufacturer');
+
+  $manufact = $c->add_manufacturer(array('name' => 'Tesla'));
    
 
 
