@@ -3,6 +3,7 @@
   error_reporting(E_ALL);
   ini_set('display_errors','On');
 
+  // TODO - handle below lines dynamically
   require_once('lib/config.php');
   require_once('models/database.php');
   require_once('models/model.php');
@@ -27,7 +28,6 @@
     if (isset($_POST)) {
       $queryParams = $_POST;
     }  
-    
 
     if ((int)method_exists($controller, $action)) {
       call_user_func_array(array($dispatch, $action), array($queryParams));

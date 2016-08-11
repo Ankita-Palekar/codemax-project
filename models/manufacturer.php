@@ -5,6 +5,8 @@
 class Manufacturer extends Model
 {
   public $table;  
+  public $id;
+  public $name;
     const MANUFACT_TABLE = "manufacturers";
 
   function __construct()
@@ -39,9 +41,23 @@ class Manufacturer extends Model
     return $c;
   }
 
-  static public function FunctionName($value='')
+  static public function get_manufacturers()
   {
-    # code...
+    
+    $db = self::get_db_object();
+    $query = "SELECT id, name FROM ".self::MANUFACT_TABLE;
+    $dbo = $db->prepare($query); 
+    $result = array();
+
+    if ($dbo->execute()) {
+      while ($row = $dbo->fetch(PDO::FETCH_ASSOC)) {
+        array_push($result, $row);
+      }
+    } else {
+      throw new Exception("There was some error while fetching the data");
+    }
+    
+    return $result;
   }
 
   static public function create($params)

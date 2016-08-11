@@ -1,3 +1,9 @@
 .outer-container{
   margin-top: 50px;
 }
+
+.car-img-container{
+  width: 100%;
+  max-width: 200px;
+  height: 100px;
+}

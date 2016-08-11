@@ -14,7 +14,8 @@
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/underscore-min.js" type="text/javascript"></script>
     <script src="assets/js/main.js"></script>
-    <script type="assets/js/jasny-bootstrap.min.js"></script>
+    <!-- <script type="assets/js/jasny-bootstrap.min.js" type="text/javascript"></script> -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script>
     <!-- Bootstrap -->
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
