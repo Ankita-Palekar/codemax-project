@@ -1,4 +1,8 @@
 $(function(){
+
+  var error_alert = '<div class="alert alert-danger text-center">$error_message</div>';
+  var succ_alert = '<div class="alert alert-info text-center">$success_message</div>';
+  var messaging_element = $('.message-info');
   $(document).ready(function(){
     $('#manufacturer_form').submit(function(e){
       e.preventDefault();
@@ -8,12 +12,15 @@ $(function(){
         $.ajax({
             url: 'index.php?model=manufacturer&action=add_manufacturer&render=json',
             type: 'post',
-            data: {name: name},
+            dataType: 'json',
+            data: {name: name}
           }).done(function(data){
-            if (!_.isEmpty(data)) {
+            if (!_.isEmpty(data.message)) {
+              $('.message-info').html(error_alert.replace("$error_message", data.message));
+            }else{
               $('.message-info').html('<div class="alert alert-info text-center">Manufacturer added successfully</div>')
               form.find('#name').val('');
-            }
+            } 
           }).fail(function(){
             $('.message-info').html('<div class="alert alert-danger text-center">There was error while adding manufacturer</div>')
           });
@@ -24,7 +31,7 @@ $(function(){
 
     $('form#add_car_form').submit(function(e) {
       e.preventDefault();
-      var form = $('form#add_car_form')[0];
+      var form = $('form#add_car_form');
       var non_numeric_keys = ['name', 'color', 'reg_no', 'note'];
       var numeric_keys = ['manufacturing_year']
       var errors = [];
@@ -47,7 +54,7 @@ $(function(){
         message = errors.join(", ");
         messaging_element.html()
       }else{
-        var form_data = new FormData(form);
+        var form_data = new FormData(form[0]);
         url = "index.php?model=carmodel&action=add_car";
         $.ajax({
             url: url,
@@ -58,17 +65,10 @@ $(function(){
             contentType: false
           }).done(function(data){
             if (!_.isEmpty(data.result)) {
-              var message = '';
-              if (!_.isEmpty(data.result['SUCCESS'])) {
-                message = data.result['SUCCESS'].join(', ');
-              }else{
-                message = "car modal added successfully"
-              }
-              messaging_element.html(succ_alert.replace("$success_message", message));
-              // form.reset();
+              messaging_element.html(succ_alert.replace("$success_message", "model added successfully"));
             }else{
-              messaging_element.html(error_alert.replace("$error_message", "Error occurred while adding message"));
-            }
+              messaging_element.html(error_alert.replace("$error_message", "modal could not be added please check the error"));
+            }  
           });
       }
 

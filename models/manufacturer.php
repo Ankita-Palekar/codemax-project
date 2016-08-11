@@ -69,12 +69,14 @@ class Manufacturer extends Model
     foreach ($params as $key => $value) {
       self::bind_key_value_for_class($dbo, $key, $value);
     }
-
+    $message = '';
     if(!$dbo->execute()) {
-      var_dump($dbo->errorInfo());
-      throw new Exception("Manufacturer model cannot be added");
+      $message = $dbo->errorInfo();
+      $message = implode(', ', $message);
+      // throw new Exception("Manufacturer model cannot be added");
     }
     // var_dump($db->lastInsertId());
-    return self::find($db->lastInsertId());
+    $result = self::find($db->lastInsertId());
+    return array('result' => $result, 'message' => $message);
   }
 }

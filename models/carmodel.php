@@ -91,13 +91,19 @@ class Carmodel extends Model
       self::bind_key_value_for_class($dbo, $key, $value);
     }
 
+    $message = '';
     if(!$dbo->execute()) {
       foreach ($photos as $p) {
         unlink('/var/www/html/codemax_assignment/'.$p);
       }
-      throw new Exception("car model cannot be added");
+      
+      $error_array = $dbo->errorInfo();
+      $message = implode(", ", $error_array);
+      // throw new Exception("car model cannot be added");
     } 
-    return self::find($db->lastInsertId());
+    $result =  self::find($db->lastInsertId());
+    return array('result' => $result, 'message' => $message);
+
   }
 
   public function destroy()
@@ -126,9 +132,11 @@ class Carmodel extends Model
         array_push($result, $row);
       }
     } else {
+
       throw new Exception("There is some error while retrieving the solution");
     }
-    return $result;
+
+    return  $result;
   }
 
   // ids is a comma seperated string
