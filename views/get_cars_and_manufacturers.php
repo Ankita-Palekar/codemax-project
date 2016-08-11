@@ -17,7 +17,7 @@
            <?php  
             foreach ($result as $key => $value) {
               echo "<tr data-ids=".$value["ids"].">";
-                echo "<td>".$key."</td>";
+                echo "<td>".($key + 1)."</td>";
                 echo "<td>".$value['car_name']."</td>";
                 echo "<td>".$value['manufacturer_name']."</td>";
                 echo "<td>".$value['count']."</td>";

@@ -32,13 +32,13 @@
          <div class="container">
             <ul class="nav navbar-nav">
               <li class="active">
-                <a href="#">Add Manufacturer</a>
+                <a href="index.php?model=manufacturer&action=add_manufacturer_form">Add Manufacturer</a>
               </li>
               <li>
-                <a href="#">Add Car Model</a>
+                <a href="index.php?model=carmodel&action=add_car_form">Add Car Model</a>
               </li>
               <li>
-                <a href="#">View Cars</a>
+                <a href="index.php?model=carmodel&action=get_cars_and_manufacturers">View Cars</a>
               </li>
             </ul>
          </div>

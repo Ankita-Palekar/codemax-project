@@ -25,30 +25,59 @@ $(function(){
     $('form#add_car_form').submit(function(e) {
       e.preventDefault();
       var form = $('form#add_car_form')[0];
-      var form_data = new FormData(form);
-      url = "index.php?model=carmodel&action=add_car";
-      $.ajax({
-          url: url,
-          type: 'post',
-          data: form_data,
-          cache:false,
-          processData: false,
-          contentType: false
-        }).done(function(data){
-          if (!_.isEmpty(data)) {
-            console.log("I was here");
-            $('.message-info').html('<div class="alert alert-danger text-center">There was error while adding manufacturer</div>');
-            // form.reset();
-          }else{
-            $('.message-info').html('<div class="alert alert-danger text-center">There was some error while adding model</div>');
-          }
-        });
+      var non_numeric_keys = ['name', 'color', 'reg_no', 'note'];
+      var numeric_keys = ['manufacturing_year']
+      var errors = [];
+      
+      _.each(non_numeric_keys, function(k){
+        if(_.isEmpty(form.find('#'+k).val())){
+          errors.push(" field "+ k + " is empty;");
+        }
+      });
+
+      _.each(numeric_keys, function(k){
+        if(_.isNumber(form.find('#'+k).val()) && (form.find('#'+k).val() < 0 )){
+          var error_message = errors.push(" field "+ k + " has 0 value;");
+          error_message = error_message.replace('$error_message', error_message);
+          messaging_element.html(error_message);
+        }
+      });
+
+      if (errors.length > 0) {
+        message = errors.join(", ");
+        messaging_element.html()
+      }else{
+        var form_data = new FormData(form);
+        url = "index.php?model=carmodel&action=add_car";
+        $.ajax({
+            url: url,
+            type: 'post',
+            data: form_data,
+            cache:false,
+            processData: false,
+            contentType: false
+          }).done(function(data){
+            if (!_.isEmpty(data.result)) {
+              var message = '';
+              if (!_.isEmpty(data.result['SUCCESS'])) {
+                message = data.result['SUCCESS'].join(', ');
+              }else{
+                message = "car modal added successfully"
+              }
+              messaging_element.html(succ_alert.replace("$success_message", message));
+              // form.reset();
+            }else{
+              messaging_element.html(error_alert.replace("$error_message", "Error occurred while adding message"));
+            }
+          });
+      }
+
 
     })
 
 
     var car_compo = `
-        <div>
+        <div class="car-div">
           <div class="row">
             <div class="col-md-1 col-md-offset-1">
               <p><strong> Name: </strong></p>
@@ -146,6 +175,7 @@ $(function(){
     })
 
     $('body').on('click', '#sell_car', function(e){
+      var $this= $(this)
       e.preventDefault();
       var url = 'index.php?model=carmodel&action=delete_car'
       $.ajax({
@@ -153,10 +183,9 @@ $(function(){
           type: 'post',
           data: {id: $(this).data('id')}
         }).done(function(data){
-          console.log("this has been deleted");
+          $ele = $this.closest('.car-div');
+          $ele.html("");
         });
     })
-
-  })
-
-})
+  });
+});
